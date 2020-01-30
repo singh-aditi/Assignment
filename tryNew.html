@@ -14,7 +14,7 @@
         document.getElementById('pagestyle').setAttribute('href', sheet);
     }
 
-    let flag = 0;
+    let flag = 0;//eidt delete flag=1 save cancel
     function EmployeeDetails() {
         let Employee = [
             {
@@ -36,7 +36,7 @@
 
 
         let arrlen = Employee.length;
-
+            let storedbody;
         function generate_table() {
 
             var body = document.getElementsByTagName("body")[0];
@@ -75,7 +75,7 @@
             tbl.appendChild(header)
 
             console.log(tbl);
-            
+
 
             // creating all cells
             for (var i = 0; i < arrlen; i++) {
@@ -99,6 +99,33 @@
                 cell.appendChild(cellText3);
                 row.appendChild(cell);
                 cell = document.createElement("td")
+
+
+                //delete function begins here
+                let del = document.createElement("input");
+                del.type = "button";
+                del.value = "Delete";
+
+                del.onclick = function () {
+                   if(flag===0){
+                    let rInd = this.parentNode.parentNode.rowIndex;
+                    document.getElementById('tbl1').deleteRow(rInd);
+                   }
+                   else
+                   {
+                    let presentBody = document.getElementsByTagName("tbody")[0];
+                presentBody.parentNode.replaceChild(storedbody,presentBody);
+                   }
+                    // function Change() {
+                    //     this.this.display.style = "none";
+                    // }
+                }
+                cell.appendChild(del);
+                row.appendChild(cell);
+                //delete ends here
+
+
+
                 //edit button starts here
                 let edit = document.createElement("input");
                 edit.value = "Edit";
@@ -112,16 +139,21 @@
                     console.log(x);
                     if (flag == 0) {
                         //editing
-                        this.value = "Save";
+                        //this.value = "Save";
 
                         var name_data = x[0].innerHTML;
                         var empid_data = x[1].innerHTML;
                         var desig_data = x[2].innerHTML;
-
+                        let tbl_bdy = document.getElementsByTagName("tbody")[0];
+                        storedbody = tbl_bdy.cloneNode(true);
                         x[0].innerHTML = "<input type='text' id='name_text" + rInd + "' value='" + name_data + "'>";
                         x[1].innerHTML = "<input type='text' id='empid_text" + rInd + "' value='" + empid_data + "'>";
                         x[2].innerHTML = "<input type='text' id='desig_text" + rInd + "' value='" + desig_data + "'>";
+                        changeButton(this);
+
                         flag = 1;
+
+                        //console.log(name_data);
                     }
                     else if (flag == 1) {
                         //saving
@@ -129,9 +161,13 @@
                         x[0].innerHTML = document.getElementById("tbl1").rows[rInd].cells[0].firstChild.value;
                         x[1].innerHTML = document.getElementById("tbl1").rows[rInd].cells[1].firstChild.value;
                         x[2].innerHTML = document.getElementById("tbl1").rows[rInd].cells[2].firstChild.value;
-
-                        this.value = "Edit";
+                        changeButton(this);
+                        //this.value = "Edit";
                         flag = 0;
+
+
+
+
                     }
 
                 }
@@ -139,16 +175,8 @@
                 row.appendChild(cell);
                 //Edit function ends here
 
-                //delete function begins here
-                let del = document.createElement("input");
-                del.type = "button";
-                del.value = "Delete";
-                del.onclick = function () {
-                    let rInd = this.parentNode.parentNode.rowIndex;
-                    document.getElementById('tbl1').deleteRow(rInd);
-                }
-                cell.appendChild(del);
-                row.appendChild(cell);
+
+
 
                 tblBody.appendChild(row);
 
@@ -158,11 +186,26 @@
             tbl.setAttribute("border", "2");
         }
         generate_table();
+        function changeButton(row) {
+            let rInd = row.parentNode.parentNode.rowIndex;
+            var x = document.getElementById("tbl1").rows[rInd].cells;
+            if (flag === 0) {
+                document.getElementById("tbl1").rows[rInd].cells[3].firstChild.value = "Cancel";
+                document.getElementById("tbl1").rows[rInd].cells[3].lastChild.value = "Save";
+
+            }
+            else {
+                document.getElementById("tbl1").rows[rInd].cells[3].firstChild.value = "Delete";
+                document.getElementById("tbl1").rows[rInd].cells[3].lastChild.value = "Edit";
+
+            }
+        }
+
     }
 </script>
 
 <body onload="javascript: EmployeeDetails()">
-    
+
 
 
 
