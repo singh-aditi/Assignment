@@ -1,0 +1,152 @@
+<!-- <p>user-dashboard works!</p> -->
+
+    <nb-layout>
+        <nb-layout-header fixed>Hospital Management System</nb-layout-header>
+    
+        <nb-sidebar>Sidebar Content</nb-sidebar>
+
+        <nb-layout-column>
+            <button nbButton>Show Users</button>
+              
+
+                            <h1 class="text-center"> User List</h1>
+                            <br>
+                            <button class="btn btn-success text-right" (click)="addUser()">Add User</button>
+                            <form [formGroup]="editUserForm" novalidate class="form">
+                
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope='col'>First Name</th>
+                                            <th scope='col'>Last Name</th>
+                                            <th scope='col'>Username</th>
+                                            <th scope='col'>Address</th>
+                                            <th scope='col'>Phone number</th>
+                                            <th scope='col'>Role</th>
+                                            <th scope='col'>DOB</th>
+                                            <th scope='col'>password</th>
+                                        </tr>
+                                    </thead>
+                
+                                    <tbody>
+                                        <tr *ngFor="let user of users">
+                                            <ng-container *ngIf="userId!=user.user_id ; else Editable">
+                                                <td>{{user.first_name}}</td>
+                                                <td>{{user.last_name}}</td>
+                                                <td>{{user.username}}</td>
+                                                <td>{{user.address}}</td>
+                                                <td>{{user.ph_no}}</td>
+                                                <td>{{user.role_id}}</td>
+                                                <td>{{user.dob}}</td>
+                                                <td>{{user.password}}</td>
+                                                <td><button class="btn btn-success" (click)="editUser(user)">Edit</button></td>
+                                                <td><button class="btn btn-danger" (click)="deleteUser(user)">Delete</button></td>
+                                            </ng-container>
+                
+                                            <ng-template #Editable>
+                
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input formControlName="first_name" class="form-control" type="text">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="last_name" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="username" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="address" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="ph_no" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="role_id" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="dob" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="form-group">
+                                                        <input type="text" formControlName="password" class="form-control">
+                                                    </span>
+                                                </td>
+                                                <td><button class="btn btn-success" (click)="onSave()">Save</button></td>
+                                                <td><button class="btn btn-danger" (click)="onCancel()">Cancel</button></td>
+                
+                                            </ng-template>
+                                        </tr>
+                
+                                    </tbody>
+                                </table>
+                                <!-- <p>Form Value: {{addUserForm.value | json}}</p>
+                                <p>Form Value: {{editUserForm.value | json}}</p> -->
+                
+                            </form>
+                            <form [formGroup]="addUserForm" novalidate class="form">
+                
+                                <tr *ngIf="userId==-1">
+                                    <td>
+                                        <span class="form-group">
+                                            <input formControlName="first_name" class="form-control" type="text" placeholder="First name">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="last_name" class="form-control" placeholder="Last name">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="username" class="form-control" placeholder="Username">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="address" class="form-control" placeholder="Address">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="ph_no" class="form-control" placeholder="Phone number">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="role_id" class="form-control" placeholder="Role" [ngValue]="user.role_id">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="dob" class="form-control" id="dob" >
+                                        </span>
+                                        <script> var d = new Date();
+                                            document.getElementsByClassName("dob").innerHTML = d;
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <span class="form-group">
+                                            <input type="text" formControlName="password" class="form-control" placeholder="password">
+                                        </span>
+                                    </td>
+                                    <td><button class="btn btn-success" (click)="onSave()">Save</button></td>
+                                    <td><button class="btn btn-danger" (click)="onCancel()">Cancel</button></td>
+                                </tr>
+                            </form>           
+        </nb-layout-column>
+    </nb-layout>
+
