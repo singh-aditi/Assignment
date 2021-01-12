@@ -1,0 +1,241 @@
+<html>
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+</head>
+<script type="text/javascript">
+
+    function swapStyleSheet(sheet) {
+        document.getElementById('pagestyle').setAttribute('href', sheet);
+    }
+    var isEdit = false;
+    var name_data = '';
+    var empid_data = '';
+    var desig_data = '';
+    let flag = 0;//eidt delete flag=1 save cancel
+    function EmployeeDetails() {
+        let Employee = [
+            {
+                EmpId: "2107",
+                EmpName: "Aditi Singh",
+                Designation: "Junior Engineer"
+            },
+            {
+                EmpId: "2108",
+                EmpName: "Harshdeep Dhiman",
+                Designation: "Junior Engineer"
+            },
+            {
+                EmpId: "2106",
+                EmpName: "Animesh",
+                Designation: "Junior Engineer"
+            }
+        ];
+
+
+        let arrlen = Employee.length;
+        let storedbody;
+        function generate_table() {
+
+            var body = document.getElementsByTagName("body")[0];
+
+            var tbl = document.createElement("table");
+            tbl.className = "table table-dark";
+            tbl.align = "center";
+            tbl.setAttribute("id", "tbl1")
+            var tblBody = document.createElement("tbody");
+            var tr, td;
+
+            var header = document.createElement('thead')
+            var headingRow = document.createElement('tr')
+
+            var headingCell1 = document.createElement('td')
+            var headingText1 = document.createTextNode('EmpID')
+            headingCell1.appendChild(headingText1)
+            headingRow.appendChild(headingCell1)
+
+            var headingCell2 = document.createElement('td')
+            var headingText2 = document.createTextNode('Name')
+            headingCell2.appendChild(headingText2)
+            headingRow.appendChild(headingCell2)
+
+            var headingCell3 = document.createElement('td')
+            var headingText3 = document.createTextNode('Designation')
+            headingCell3.appendChild(headingText3)
+            headingRow.appendChild(headingCell3)
+
+            var headingCell4 = document.createElement('td')
+            var headingText4 = document.createTextNode('Operation')
+            headingCell4.appendChild(headingText4)
+            headingRow.appendChild(headingCell4)
+
+            header.appendChild(headingRow)
+            tbl.appendChild(header)
+
+            console.log(tbl);
+
+
+            // creating all cells
+            for (var i = 0; i < arrlen; i++) {
+                // creates a table row
+                let row = document.createElement("tr");
+                let cell = document.createElement("td");
+
+                let cellText1 = document.createTextNode(Employee[i].EmpId);
+                console.log(cellText1);
+                cellText1.id = "cellText1";
+                cell.appendChild(cellText1);
+                row.appendChild(cell);
+                cell = document.createElement("td")
+                let cellText2 = document.createTextNode(Employee[i].EmpName);
+                cellText2.id = "cellText2";
+                cell.appendChild(cellText2);
+                row.appendChild(cell);
+                cell = document.createElement("td")
+                let cellText3 = document.createTextNode(Employee[i].Designation);
+                cellText3.id = "cellText3";
+                cell.appendChild(cellText3);
+                row.appendChild(cell);
+                cell = document.createElement("td")
+
+
+                //delete function begins here
+                let del = document.createElement("input");
+                del.type = "button";
+                del.value = "Delete";
+                del.className = "btn btn-primary"
+                del.onclick = function () {
+                    if (flag === 0) {
+                        let rInd = this.parentNode.parentNode.rowIndex;
+                        console.log(rInd);
+                        document.getElementById('tbl1').deleteRow(rInd);
+                    }
+                    else {
+                        let rInd = this.parentNode.parentNode.rowIndex;
+                        var x = document.getElementById("tbl1").rows[rInd].cells;
+                        //saving
+                        console.log("inside cancel");
+                        x[0].innerHTML = x[0].firstChild.name;
+                        x[1].innerHTML = empid_data;
+                        x[2].innerHTML = desig_data;
+                        changeButton(this);
+                    }
+
+
+
+
+
+                }
+                cell.appendChild(del);
+                row.appendChild(cell);
+                //delete ends here
+
+
+
+                //edit button starts here
+                let edit = document.createElement("input");
+                edit.value = "Edit";
+                edit.type = "button";
+                edit.className = "edit btn btn-primary";
+                edit.setAttribute("id", "edit" + i);
+                edit.onclick = function () {
+                    let rInd = this.parentNode.parentNode.rowIndex;
+                    var x = document.getElementById("tbl1").rows[rInd].cells;
+                    console.log(x);
+                    if (flag === 0) {
+                        //editing
+                        //this.value = "Save";
+
+                        name_data = x[0].innerHTML;
+                        empid_data = x[1].innerHTML;
+                        desig_data = x[2].innerHTML;
+                        let tbl_bdy = document.getElementsByTagName("tbody")[0];
+                        storedbody = tbl_bdy.cloneNode(true);
+                        x[0].innerHTML = "<input type='text' id='name_text" + rInd + "' value='" + name_data + "' name='" + name_data + "'>";
+                        x[1].innerHTML = "<input type='text' id='empid_text" + rInd + "' value='" + empid_data + "'>";
+                        x[2].innerHTML = "<input type='text' id='desig_text" + rInd + "' value='" + desig_data + "'>";
+                        changeButton(this);
+
+                        //console.log(name_data);
+                    }
+                    else {
+                        //saving
+                        console.log("inside save");
+                        x[0].innerHTML = document.getElementById("tbl1").rows[rInd].cells[0].firstChild.value;
+                        x[1].innerHTML = document.getElementById("tbl1").rows[rInd].cells[1].firstChild.value;
+                        x[2].innerHTML = document.getElementById("tbl1").rows[rInd].cells[2].firstChild.value;
+                        changeButton(this);
+                        //this.value = "Edit";
+
+
+
+
+                    }
+
+                }
+                cell.appendChild(edit);
+                row.appendChild(cell);
+                //Edit function ends here
+
+
+
+
+                tblBody.appendChild(row);
+
+            }
+            tbl.appendChild(tblBody);
+            body.appendChild(tbl);
+            tbl.setAttribute("border", "2");
+        }
+        generate_table();
+        function changeButton(row) {
+            console.log('sahfouohaoishf', row.parentNode);
+            let rInd = row.parentNode.parentNode.rowIndex;
+            console.log(rInd);
+            var x = document.getElementById("tbl1").rows[rInd].cells;
+
+            if (flag === 0) {
+                document.getElementById("tbl1").rows[rInd].cells[3].firstChild.value = "Cancel";
+                document.getElementById("tbl1").rows[rInd].cells[3].lastChild.value = "Save";
+                flag = 1;
+                var restOfButton = document.getElementsByClassName('edit');
+                for (var i = 0; i < restOfButton.length; i++) {
+                    var element = restOfButton.item(i)
+                    if (element.value === 'Edit') {
+                        element.disabled = true;
+                    }
+
+                }
+                console.log(restOfButton, 'buttons')
+
+            }
+            else {
+                document.getElementById("tbl1").rows[rInd].cells[3].firstChild.value = "Delete";
+                document.getElementById("tbl1").rows[rInd].cells[3].lastChild.value = "Edit";
+                flag = 0;
+                var restOfButton = document.getElementsByClassName('edit');
+                for (var i = 0; i < restOfButton.length; i++) {
+                    var element = restOfButton.item(i)
+                        element.disabled = false;
+                   
+                }
+
+            }
+        }
+
+    }
+</script>
+
+<body onload="javascript: EmployeeDetails()">
+
+
+
+
+</body>
+
+</html>
